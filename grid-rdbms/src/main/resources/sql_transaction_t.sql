@@ -7,13 +7,14 @@ CREATE TABLE transaction_t (
  description            VARCHAR(60) NOT NULL,
  amount                 INT NOT NULL,
  authorisation          BOOLEAN NOT NULL,
+ auth_code              VARCHAR(60) NOT NULL,
  PRIMARY KEY (id)
 ) ENGINE InnoDB;
 
 
-INSERT INTO transaction_t (id, account_id, date, description, amount, authorisation)
+INSERT INTO transaction_t (id, account_id, date, description, amount, authorisation, auth_code)
 VALUES
-(1, 1001001, DATE_SUB(CURDATE(), INTERVAL 2 DAY), 'London LGW coffee shop', 10, false)
-,(2, 1001001, DATE_SUB(CURDATE(), INTERVAL 1 DAY), 'Menara RAK coffee shop', 50, false)
-,(3, 1001001, DATE_SUB(CURDATE(), INTERVAL 1 DAY), 'Palm Plaza', 150, true)
+(1, 1001001, DATE_SUB(CURDATE(), INTERVAL 2 DAY), 'London LGW coffee shop', 10, false, '')
+,(2, 1001001, DATE_SUB(CURDATE(), INTERVAL 1 DAY), 'Menara RAK coffee shop', 50, false, '')
+,(3, 1001001, DATE_SUB(CURDATE(), INTERVAL 1 DAY), 'Palm Plaza', 150, true, 'XYZ')
 ;

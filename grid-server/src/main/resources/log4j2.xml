@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+        <Appenders>
+                <Console name="ConsoleBlue" target="SYSTEM_OUT">
+                        <PatternLayout
+                                pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level %logger{36}} - %blue{%msg%n}" />
+                </Console>
+                <Console name="ConsoleCyan" target="SYSTEM_OUT">
+                        <PatternLayout
+                                pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level %logger{36}} - %cyan{%msg%n}" />
+                </Console>
+                <Console name="ConsoleMagenta" target="SYSTEM_OUT">
+                        <PatternLayout
+                                pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level %logger{36}} - %magenta{%msg%n}" />
+                </Console>
+                <Console name="ConsoleMagentaBlink" target="SYSTEM_OUT">
+	                	<RegexFilter regex=".* Starting .*|.* Setting .*|.* Copyright .*" 
+	                		onMatch="DENY" onMismatch="ACCEPT"/>
+                        <PatternLayout
+                                pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level %logger{36}} - %style{%msg%n}{blink,magenta}" />
+                </Console>
+                <Console name="ConsoleRed" target="SYSTEM_OUT">
+                        <PatternLayout
+                                pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level %logger{36}} - %red{%msg%n}" />
+                </Console>
+                <Console name="ConsoleWhite" target="SYSTEM_OUT">
+                        <PatternLayout
+                                pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level %logger{36}} - %white{%msg%n}" />
+                </Console>
+                <Console name="ConsoleYellow" target="SYSTEM_OUT">
+                        <PatternLayout
+                                pattern="%d{HH:mm:ss.SSS} [%t] %highlight{%-5level %logger{36}} - %yellow{%msg%n}" />
+                </Console>
+        </Appenders>
+
+        <Loggers>
+                <Logger name="com.hazelcast" level="error" additivity="false">
+                        <AppenderRef ref="ConsoleCyan" />
+                </Logger>
+                <Logger name="com.hazelcast.client.spi.impl" level="info" additivity="false">
+                        <AppenderRef ref="ConsoleCyan" />
+                </Logger>
+                <Logger name="com.hazelcast.core" level="info" additivity="false">
+                        <AppenderRef ref="ConsoleCyan" />
+                </Logger>
+                <Logger name="com.hazelcast.internal.cluster" level="info" additivity="false">
+                        <AppenderRef ref="ConsoleCyan" />
+                </Logger>
+                
+                
+				<!--  ======== -->
+                <!--  My Stuff -->
+				<!--  ======== -->
+                <Logger name="neil.demo" level="debug" additivity="false">
+                        <AppenderRef ref="ConsoleYellow" />
+                </Logger>
+                <Logger name="neil.demo.devoxx.MyAccountLoader" level="debug" additivity="false">
+                        <AppenderRef ref="ConsoleMagentaBlink" />
+                </Logger>
+                <Logger name="neil.demo.devoxx.MyTransactionLoader" level="debug" additivity="false">
+                        <AppenderRef ref="ConsoleMagentaBlink" />
+                </Logger>
+				<!--  ======== -->
+                <!--  My Stuff -->
+				<!--  ======== -->
+
+                <Logger name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer"
+                        level="info" additivity="false">
+                        <AppenderRef ref="ConsoleWhite" />
+                </Logger>
+
+                <Root level="error">
+                        <AppenderRef ref="ConsoleRed" />
+                </Root>
+        </Loggers>
+</Configuration>
