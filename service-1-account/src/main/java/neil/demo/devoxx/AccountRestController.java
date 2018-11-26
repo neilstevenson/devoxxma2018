@@ -1,6 +1,7 @@
 package neil.demo.devoxx;
 
 import java.util.Collection;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class AccountRestController {
 		
 		IMap<Integer, String> accountMap = this.hazelcastInstance.getMap("account");
 		
-		return accountMap.keySet();
+		return new TreeSet<>(accountMap.keySet());
 	}
 	
 	@GetMapping("/{id}")

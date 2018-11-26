@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
+import com.hazelcast.query.Predicate;
+import com.hazelcast.query.SqlPredicate;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,19 +24,19 @@ public class TransactionRestController {
     private HazelcastInstance hazelcastInstance;
 
 	@GetMapping("/")
-	public Collection<Integer> transactions() {
+	public Collection<String> transactions() {
 		log.info("transactions()");
 		
-		IMap<Integer, String> transactionMap = this.hazelcastInstance.getMap("transaction");
+		IMap<String, String> transactionMap = this.hazelcastInstance.getMap("transaction");
 		
-		return transactionMap.keySet();
+		return new TreeSet<>(transactionMap.keySet());
 	}
 	
 	@GetMapping("/{id}")
-	public String transaction(@PathVariable("id") int id) {
+	public String transaction(@PathVariable("id") String id) {
 		log.info("transaction({})", id);
 
-		IMap<Integer, String> transactionMap = this.hazelcastInstance.getMap("transaction");
+		IMap<String, String> transactionMap = this.hazelcastInstance.getMap("transaction");
 
 		String result = transactionMap.get(id);
 		
@@ -51,15 +53,15 @@ public class TransactionRestController {
 	 * </p>
 	 */
 	@GetMapping("/accountId/{accountId}")
-	public Collection<String> transactionsForAccount(@PathVariable("accountId") int accountId) {
+	public Collection<String> transactionsForAccount(@PathVariable("accountId") String accountId) {
 		log.info("transactionsForAccount({})", accountId);
-		
-		String matchStr = "\"accountId\":" + accountId + ",";
-
-		IMap<Integer, String> transactionMap = this.hazelcastInstance.getMap("transaction");
 
 		Set<String> result = new TreeSet<>();
-		
+
+		IMap<String, String> transactionMap = this.hazelcastInstance.getMap("transaction");
+
+		String matchStr = "\"accountId\":" + accountId + ",";
+
 		transactionMap.keySet()
 		.stream()
 		.forEach(key -> {
@@ -71,6 +73,23 @@ public class TransactionRestController {
 		});
 		
 		return result;
+	}
+
+	/**
+	 * <p>Predicate search, occurs server side</p>
+	 */
+	@GetMapping("/accountId/fast/{accountId}")
+	public Collection<String> transactionsForAccount2(@PathVariable("accountId") String accountId) {
+
+		IMap<String, String> transactionMap = this.hazelcastInstance.getMap("transaction");
+
+		@SuppressWarnings("unchecked")
+		Predicate<String, String> predicate = 
+			new SqlPredicate("__key LIKE '" + accountId + ",%'");
+
+		log.info("transactionsForAccount2({}) => {}", accountId, predicate);
+
+        return new TreeSet<>(transactionMap.values(predicate));
 	}
 
 }

@@ -5,7 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface TransactionTRepository extends CrudRepository<TransactionT, Integer> {
         
-        @Query("SELECT t.id FROM TransactionT t")
-        public Iterable<Integer> findIds();
+	// Hazelcast key is compound of database foreign and primary
+    @Query("SELECT CONCAT(t.accountId, ',', t.id) FROM TransactionT t")
+    public Iterable<String> findIds();
 
 }

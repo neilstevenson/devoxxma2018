@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head" />
+
+<body>
+	<div th:include="fragments :: header">?</div>
+
+	<div class="mainpane">
+
+		<h1 th:text="${'Account : ' + account}"></h1>
+
+		<h2>Basic Info</h2>
+		
+			<div th:unless="${#strings.isEmpty(reason1)}" class="problemDiv">
+				<h2>Not Available</h2>
+				<h4 th:text="${'Reason: ' + reason1}"></h4>
+			</div>
+
+			<div th:if="${#strings.isEmpty(reason1)}">
+				<table th:unless="${data1.isEmpty()}" class="myData">
+					<tr>
+						<th>Field</th><th>Value</th>
+					</tr>
+
+					<tr th:each="datum : ${data1}">
+						<td th:text="${datum.key}" />
+						<td th:text="${datum.value}" />
+					</tr>
+			</table>
+			</div>
+		
+		<h2>Transaction Info</h2>
+
+			<div th:unless="${#strings.isEmpty(reason2)}" class="problemDiv">
+				<h2>Not Available</h2>
+				<h4 th:text="${'Reason: ' + reason2}"></h4>
+			</div>
+
+			<div th:if="${#strings.isEmpty(reason2)}">
+				<p th:if="${data2.isEmpty()}">No transactions</p>
+			
+				<table th:unless="${data2.isEmpty()}" class="myData">
+					<tr>
+						<th th:each="column : ${columns2}" th:text="${column}" />
+						<th>:</th>
+						<th>Action</th>
+					</tr>
+
+                    <tr th:each="datum : ${data2}">
+                    	<td th:each="column : ${columns2}" th:text="${datum.get(column)}" />
+						<td>&nbsp;</td>
+                        <td align="center">
+                			<form th:action="@{/account/index3}">
+                        		<input type="hidden" name="account" th:value="${datum.get('accountId')}"/>
+                        		<input type="hidden" name="transaction" th:value="${datum.get('id')}"/>
+             	                <input class="mySubmit" type="submit" th:value="Dispute"/>
+                        	</form>
+                        </td>
+                    </tr>
+
+			</table>
+			</div>
+
+		<hr />
+		<form name="select" th:action="@{/account/index}">
+			<input class="mySubmit" type="submit" value="Account" />
+		</form>
+
+	</div>
+
+	<div th:include="fragments :: footer">?</div>
+</body>
+
+</html>

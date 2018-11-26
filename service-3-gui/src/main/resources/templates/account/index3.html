@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments :: head" />
+
+<body>
+	<div th:include="fragments :: header">?</div>
+
+	<div class="mainpane">
+
+		<h1 th:text="${'Account : ' + account}"></h1>
+
+
+		<div th:unless="${#strings.isEmpty(reason1)}" class="problemDiv">
+			<h2>Failed, please retry later</h2>
+			<h4 th:text="${'Reason: ' + reason1}"></h4>
+		</div>
+
+		<div th:if="${#strings.isEmpty(reason1)}">
+			<h2 th:text="${'Dispute noted for transaction : ' + transaction}"></h2>
+		</div>
+
+		<hr />
+		<form name="select" th:action="@{/account/index}">
+			<input class="mySubmit" type="submit" value="Account" />
+		</form>
+
+	</div>
+
+	<div th:include="fragments :: footer">?</div>
+</body>
+
+</html>

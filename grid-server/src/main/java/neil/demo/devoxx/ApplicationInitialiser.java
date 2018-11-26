@@ -20,6 +20,9 @@ public class ApplicationInitialiser implements CommandLineRunner {
 			"jsessionid",
 			"transaction"
 	};
+	private static final String[] IQUEUE_NAMES = {
+			"disputes",
+	};
 	
 	
 	@Autowired
@@ -29,6 +32,9 @@ public class ApplicationInitialiser implements CommandLineRunner {
 	public void run(String... args) throws Exception {
         for (String mapName : IMAP_NAMES) {
             this.hazelcastInstance.getMap(mapName);
+        }
+        for (String queueName : IQUEUE_NAMES) {
+        	this.hazelcastInstance.getQueue(queueName);
         }
 	}
 	

@@ -1,0 +1,4 @@
+server.port: '@service-3-port@'
+
+my.service1.url: 'localhost:@service-1-port@'
+my.service2.url: 'localhost:@service-2-port@'

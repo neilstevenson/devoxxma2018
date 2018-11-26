@@ -42,4 +42,9 @@
 		</map-store>
 	</map>
 	
+	<!-- Force queue full if another microservice isn't consuming -->
+	<queue name="disputes">
+		<max-size>2</max-size>
+	</queue>
+	
 </hazelcast>

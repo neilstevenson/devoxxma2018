@@ -29,12 +29,19 @@
 		<hazelcast-wm.version>3.8.3</hazelcast-wm.version>
 		<hibernate3-maven-plugin.version>2.2</hibernate3-maven-plugin.version>
 		<sql-maven-plugin.version>1.5</sql-maven-plugin.version>
+
+		<service-1-port>8081</service-1-port>
+		<service-2-port>8082</service-2-port>
+		<service-3-port>8083</service-3-port>
 	</properties>
 
 	<modules>
 		<module>grid-rdbms</module>
 		<module>grid-repository</module>
 		<module>grid-server</module>
+		<module>service-1-account</module>
+		<module>service-2-transaction</module>
+		<module>service-3-gui</module>
 	</modules>
 
 	<dependencies>
