@@ -52,10 +52,16 @@
 				<!--  ======== -->
                 <!--  My Stuff -->
 				<!--  ======== -->
-                <Logger name="neil.demo" level="debug" additivity="false">
+                <Logger name="neil.demo" level="info" additivity="false">
+                        <AppenderRef ref="ConsoleWhite" />
+                </Logger>
+                <Logger name="neil.demo.devoxx.ApplicationInitialiser" level="info" additivity="false">
                         <AppenderRef ref="ConsoleYellow" />
                 </Logger>
                 <Logger name="neil.demo.devoxx.MyAccountLoader" level="debug" additivity="false">
+                        <AppenderRef ref="ConsoleMagentaBlink" />
+                </Logger>
+                <Logger name="neil.demo.devoxx.MyAddressLoader" level="debug" additivity="false">
                         <AppenderRef ref="ConsoleMagentaBlink" />
                 </Logger>
                 <Logger name="neil.demo.devoxx.MyTransactionLoader" level="debug" additivity="false">
@@ -64,11 +70,6 @@
 				<!--  ======== -->
                 <!--  My Stuff -->
 				<!--  ======== -->
-
-                <Logger name="org.springframework.boot.web.embedded.tomcat.TomcatWebServer"
-                        level="info" additivity="false">
-                        <AppenderRef ref="ConsoleWhite" />
-                </Logger>
 
                 <Root level="error">
                         <AppenderRef ref="ConsoleRed" />

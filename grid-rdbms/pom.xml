@@ -46,7 +46,7 @@
 				<artifactId>sql-maven-plugin</artifactId>
 				<version>${sql-maven-plugin.version}</version>
 				<configuration>
-					<driver>com.mysql.jdbc.Driver</driver>
+					<driver>com.mysql.cj.jdbc.Driver</driver>
 					<username>${database.username}</username>
 					<password>${database.password}</password>
 				</configuration>

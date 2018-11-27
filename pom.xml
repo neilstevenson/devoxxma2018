@@ -33,6 +33,7 @@
 		<service-1-port>8081</service-1-port>
 		<service-2-port>8082</service-2-port>
 		<service-3-port>8083</service-3-port>
+		<service-4-port>8084</service-4-port>
 	</properties>
 
 	<modules>
@@ -42,6 +43,7 @@
 		<module>service-1-account</module>
 		<module>service-2-transaction</module>
 		<module>service-3-gui</module>
+		<module>service-4-address</module>
 	</modules>
 
 	<dependencies>

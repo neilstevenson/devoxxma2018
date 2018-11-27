@@ -41,8 +41,11 @@ public class AccountController {
 	private String service1URL;
 	@Value("${my.service2.url}")
 	private String service2URL;
+	@Value("${my.service4.url}")
+	private String service4URL;
 
     @GetMapping("/index")
+    @SuppressWarnings("rawtypes")
     public ModelAndView index(HttpSession httpSession) {
         log.info("index(), session={}", httpSession.getId());
 
@@ -64,11 +67,6 @@ public class AccountController {
 
     	long before = System.currentTimeMillis();
         try {		
-        	/*TODO Sort generic on Collection.class
-            ResponseEntity<Collection<Integer>> responseEntity =
-                    restTemplate.getForEntity(uri, Collection.class);
-            */
-            @SuppressWarnings("rawtypes")
             ResponseEntity<Collection> responseEntity =
                     restTemplate.getForEntity(uri, Collection.class);
             
@@ -95,6 +93,7 @@ public class AccountController {
     }
     
     @GetMapping("/index2")
+    @SuppressWarnings("rawtypes")
     public ModelAndView index2(HttpServletRequest httpServletRequest, HttpSession httpSession) {
         String account = httpServletRequest.getParameter("account");
         if (account==null) {
@@ -108,11 +107,14 @@ public class AccountController {
         Map<String, String> data1 = new HashMap<>();
     	List<String> columns2 = new ArrayList<>();
     	List<Map<String, String>> data2 = new ArrayList<>();
+        Map<String, String> data4 = new HashMap<>();
         String failure1Reason = "";
         String failure2Reason = "";
+        String failure4Reason = "";
 
         RestTemplate restTemplate = new RestTemplate();
-        
+
+        // Account basics
         String url1 = "http://" + this.service1URL + "/" + account;
         
         UriComponentsBuilder builder1 = UriComponentsBuilder.fromHttpUrl(url1);
@@ -149,6 +151,7 @@ public class AccountController {
     	long elapsed1 = Math.abs(System.currentTimeMillis() - before1);
     	log.info("{}ms to call {}", elapsed1, url1);
 
+        // Account transactions
         String url2 = "http://" + this.service2URL + "/accountId/fast/" + account;
         
         UriComponentsBuilder builder2 = UriComponentsBuilder.fromHttpUrl(url2);
@@ -156,8 +159,6 @@ public class AccountController {
 
     	long before2 = System.currentTimeMillis();
         try {
-        	//TODO Sort generic on Collection.class
-            @SuppressWarnings("rawtypes")
 			ResponseEntity<Collection> responseEntity =
                     restTemplate.getForEntity(uri2, Collection.class);
             
@@ -196,12 +197,59 @@ public class AccountController {
         }
     	long elapsed2 = Math.abs(System.currentTimeMillis() - before2);
     	log.info("{}ms to call {}", elapsed2, url2);
+
+        // Account address
+        String url4 = "http://" + this.service4URL + "/" + account;
+        
+        UriComponentsBuilder builder4 = UriComponentsBuilder.fromHttpUrl(url4);
+        URI uri4 = builder4.build().encode().toUri();
+
+    	long before4 = System.currentTimeMillis();
+        try {		
+            ResponseEntity<String> responseEntity =
+                    restTemplate.getForEntity(uri4, String.class);
+            
+            if (responseEntity.getStatusCode() == HttpStatus.OK) {
+            	ObjectMapper objectMapper = new ObjectMapper();
+            	
+            	String body = responseEntity.getBody();
+            	            	
+            	JsonNode jsonNode = objectMapper.readTree(body);
+
+            	Iterator<String> keys = jsonNode.fieldNames();
+            	while (keys.hasNext()) {
+            		String key = keys.next();
+
+            		if (key.startsWith("classVersion") ||
+            				key.startsWith("classId") ||
+            				key.startsWith("factoryId")) {
+            			// Do nothing, should really elide in service 4
+            		} else {
+                		JsonNode value = jsonNode.get(key);
+                		
+                		log.error("DATA 4 ADD {} {}", key, value.asText());
+                		data4.put(key, value.asText());
+            		}
+            	}
+            	
+            } else {
+                failure4Reason = responseEntity.getStatusCode().toString();
+            }
+        } catch (Exception e) {
+        	failure4Reason = e.getMessage();
+        	log.error("'{}' : {}", url4, failure4Reason);
+        }
+    	long elapsed4 = Math.abs(System.currentTimeMillis() - before4);
+    	log.info("{}ms to call {}", elapsed4, url4);
+
     	
         modelAndView.addObject("data1", data1);
         modelAndView.addObject("columns2", columns2);
         modelAndView.addObject("data2", data2);
+        modelAndView.addObject("data4", data4);
         modelAndView.addObject("reason1", failure1Reason);
         modelAndView.addObject("reason2", failure2Reason);
+        modelAndView.addObject("reason4", failure4Reason);
         
         return modelAndView;
     }

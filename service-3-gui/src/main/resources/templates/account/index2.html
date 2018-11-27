@@ -62,6 +62,26 @@
 			</table>
 			</div>
 
+		<h2>Address Info</h2>
+		
+			<div th:unless="${#strings.isEmpty(reason4)}" class="problemDiv">
+				<h2>Not Available</h2>
+				<h4 th:text="${'Reason: ' + reason4}"></h4>
+			</div>
+
+			<div th:if="${#strings.isEmpty(reason4)}">
+				<table th:unless="${data4.isEmpty()}" class="myData">
+					<tr>
+						<th>Field</th><th>Value</th>
+					</tr>
+
+					<tr th:each="datum : ${data4}">
+						<td th:text="${datum.key}" />
+						<td th:text="${datum.value}" />
+					</tr>
+			</table>
+			</div>
+
 		<hr />
 		<form name="select" th:action="@{/account/index}">
 			<input class="mySubmit" type="submit" value="Account" />

@@ -34,6 +34,15 @@
 
 	<!-- Don't bother with config for "jsessionid" map, default is fine -->
 	
+	<!-- "address" has expiry, don't keep in memory if not used -->
+	<map name="address">
+		<backup-count>0</backup-count>
+		<time-to-live-seconds>30</time-to-live-seconds>
+		<max-idle-seconds>30</max-idle-seconds>
+		<map-store enabled="true" initial-mode="EAGER">
+			<class-name>neil.demo.devoxx.MyAddressLoader</class-name>
+		</map-store>
+	</map>
 	<!-- Same idea as "account" but for "transaction" -->
 	<map name="transaction">
 		<backup-count>0</backup-count>
@@ -46,5 +55,12 @@
 	<queue name="disputes">
 		<max-size>2</max-size>
 	</queue>
-	
+
+	<!-- For objects the server side needs to know about -->
+    <serialization>
+          <portable-version>1</portable-version>
+          <portable-factories>
+                <portable-factory factory-id="99">neil.demo.devoxx.MyVersionedPortableFactory</portable-factory>
+          </portable-factories>
+    </serialization>	
 </hazelcast>

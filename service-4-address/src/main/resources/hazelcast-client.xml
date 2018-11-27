@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hazelcast-client
+	xmlns="http://www.hazelcast.com/schema/client-config"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.hazelcast.com/schema/client-config
+                  http://www.hazelcast.com/schema/client-config/hazelcast-client-config-3.11.xsd">
+
+	<group>
+		<name>devoxx</name>
+	</group>
+
+	<instance-name>@project.artifactId@</instance-name>
+
+	<properties>
+		<!-- Make client statistics show on the Management Center, off by default -->
+		<property name="hazelcast.client.statistics.enabled">true</property>
+	</properties>
+
+	<network>
+		<cluster-members>
+			<address>127.0.0.1:5701</address>
+			<address>127.0.0.1:5702</address>
+		</cluster-members>
+	</network>
+
+	<!-- For objects the server side needs to know about -->
+    <serialization>
+          <portable-version>1</portable-version>
+          <portable-factories>
+                <portable-factory factory-id="99">neil.demo.devoxx.MyVersionedPortableFactory</portable-factory>
+          </portable-factories>
+    </serialization>	
+
+</hazelcast-client>

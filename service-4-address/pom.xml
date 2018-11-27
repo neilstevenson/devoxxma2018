@@ -9,10 +9,10 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>service-2-transaction</artifactId>
+	<artifactId>service-4-address</artifactId>
 
-	<name>Devoxx : Service 2 - Transaction</name>
-	<description>Transaction operations microservice</description>
+	<name>Devoxx : Service 4 - Address</name>
+	<description>Address operations microservice</description>
 
 	<dependencies>
                 <dependency>
